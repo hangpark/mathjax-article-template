@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lectures on Quantum Theory</title>
+
+<link href="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@1.0.0/style.css" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@1.0.0/script.js"></script>
+</head>
+<body>
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <div class="brand">Lectures on Quantum Theory</div>
+  </div>
+</header>
+
+<main role="main">
+  <article itemscope itemtype="https://schema.org/ScholarlyArticle">
+    <h1 class="title" itemprop="headline">Lectures on Quantum Theory</h1>
+    <p class="authors" itemprop="author">Lecturer: Dr. Frederic P. Schuller; Documented by Hang Park</p>
+
+    <section class="sec" aria-labelledby="banach-space">
+      <h2 class="section-title" id="banach-space">Banach Spaces</h2>
+
+      Every <em>Hilbert space</em> is a <em>Banach space</em>,
+      but the converse is not true.
+
+      <definition id="def:banach-space" data-title="Banach space">
+        A normed vector space $(V, \norm\cdot)$ is called a <dfn>Banach space</dfn>
+        if it is complete with respect to the norm $\norm\cdot$.
+      </definition>
+
+      <definition>
+        Let $V$ and $W$ be normed vector spaces.
+        Then, a linear map $A:V\linearto W$ is said to be <dfn>bounded</dfn> if
+        $$\sup_{\substack{f\in V \\ f\neq 0}}\frac{\norm{Af}_W}{\norm f_V}=\sup_{\norm f_V=1}\norm{Af}_W<\infty.$$
+      </definition>
+
+      <definition id="def:operator-norm" data-title="Operator norm">
+        The <dfn>operator norm</dfn> of a bounded operator $A:V\linearto W$ is defined by
+        $$\norm A=\sup_{\norm f_V=1}\norm{Af}_W.$$
+
+        <details class="example"><summary></summary>
+          Let $V=W$ and define a map $\mathrm{id}_W:W\rightarrow W$ by $f\mapsto f$. Then
+          $$
+            \norm{\mathrm{id}_W}
+            =\sup_{\norm f_W=1}\norm{\mathrm{id}_W f}_W
+            =\sup_{\norm f_W=1}\norm f_W=1,
+          $$
+          so $\mathrm{id}_W$ is bounded with $\norm{\mathrm{id}_W}=1$.
+        </details>
+
+        <details class="example"><summary>Counterexample.</summary>
+          <p>
+            Let $W=C^0([0,1])=\{f:[0,1]\to\mathbb{C}\mid f\mathrm{\ is\ continuous}\}$.
+            Define a norm by $\norm{f}_\infty=\sup_{x\in[0,1]}\lvert f(x)\rvert$. (It is called the <dfn>maximum norm</dfn>.)
+            Then we can easily show that $(W,\norm\cdot_\infty)$ is complete, so is a Banach space.
+          </p>
+          <p>
+            Now define $P:C^1([0,1])\to C^0([0,1])$ by $f\mapsto f'$. Clearly, $P$ is linear.
+          </p>
+          <p class="callout">
+            Note that $C^1([0,1])\subseteq C^0([0,1])$, so we can inherit a norm $\norm\cdot_\infty$ from $C^0([0,1])$ to $C^1([0,1])$.
+            We can easily show that $(C^1([0,1]),\norm\cdot_\infty)$ is not a Banach space, but still is a normed vector space.
+          </p>
+          <p>
+            Claim that $P$ is not bounded.
+          </p>
+          <proof>
+            <p>
+              Consider the sequence $f_n(x)=\sin(2\pi nx)$ in $C^1([0,1])$ for $n\in\mathbb{N}$.
+              Then we have $\norm{f_n}_\infty=1$. Since
+              $$(Pf_n)(x)=\frac{d}{dx}\sin(2\pi nx)=2\pi n\cos(2\pi nx),$$
+              we have $\norm{Pf_n}_\infty=2\pi n$.
+            </p>
+            <p>
+              Thus,
+              $$\norm P=\sup_{\norm f_\infty=1}\norm{Pf}_\infty\geq\sup_{n\in\mathbb{N}}\norm{Pf_n}_\infty=\sup_{n\in\mathbb{N}}2\pi n=\infty,$$
+              therefore, $P$ is not bounded.
+            </p>
+          </proof>
+          <div class="callout">
+            <p>
+              Although in quantum mechanics we do not use the maximum norm
+              $\lVert\cdot\rVert_\infty$ from the above example, and the momentum operator
+              is defined differently — in one spatial dimension as
+              $$P(\psi) = -\,i\,\hbar\,\psi'(x),$$
+              where $\hbar$ is the reduced Planck constant — the example still suggests
+              that the momentum operator is not bounded.
+            </p>
+            <p>
+              The same conclusion applies to the position operator as well.
+            </p>
+          </div>
+        </details>
+      </definition>
+
+      <theorem>
+        <p>
+          Let $V$ be a normed vector space and $W$ be a Banach space.
+          Then the set
+          $$\mathcal{L}(V,W)=\{A:V\linearto W\mid\norm A<\infty\}$$
+          is a Banach space if equipped with <xref to="def:operator-norm">the operator norm</xref> $\norm\cdot_{\mathcal{L}(V,W)}$.
+        </p>
+        <details class="proof"><summary>Proof. (Completeness)</summary>
+          <p>
+            Assume that $\{A_n\}_{n\in\mathbb{N}}$ is a Cauchy sequence in $\mathcal{L}(V,W)$.
+            Then for a given $\varepsilon>0$, there exists
+            $N\in\mathbb{N}$ such that for all $n,m\ge N$,
+            $$\norm{A_n - A_m} < \varepsilon.$$
+          </p>
+          <ol class="roman-italic">
+            <li>
+              <p><i>(Construction)</i></p>
+              <p>
+                For each $f\in V$, we have
+                $$
+                  \norm{A_nf-A_mf}_W=\norm{(A_n-A_m)f}_W\leq\norm{A_n-A_m}\cdot\norm f_V
+                  <\varepsilon\cdot\norm f_V
+                $$
+                and $\norm f_V$ is finite, $\{A_nf\}_{n\in\mathbb{N}}\subseteq W$ is also a Cauchy sequence.
+              </p>
+              <p>
+                Since $(W,\norm\cdot_W)$ is a Banach space, the limit $\lim_{n\to\infty}A_nf$ exists in $W$.
+              </p>
+              <p>
+                Now, define a map $A:V\to W$ by $f\mapsto\lim_{n\to\infty}A_nf$.
+              </p>
+            </li>
+            <li>
+              <p><i>(Linearity)</i></p>
+              <p>
+                For all $f,g\in V$ and for all $\lambda\in\mathbb{C}$,
+                $$\begin{aligned}
+                  A(f+g)&=\lim_{n\to\infty}A_n(f+_Vg)
+                  =\lim_{n\to\infty}(A_nf+_WA_ng)
+                  =\lim_{n\to\infty}A_nf+\lim_{n\to\infty}A_ng \\
+                  &=Af+Ag,
+                \end{aligned}$$
+                and similarly $A(\lambda f)=\lambda\cdot Af$.
+              </p>
+            </li>
+            <li>
+              <p><i>(Boundedness)</i></p>
+              <p>
+                Fix $m = N$. By the triangle inequality,
+                $$\norm{A_n} \le \norm{A_n - A_N} + \norm{A_N} < \varepsilon + \norm{A_N}.$$
+                Hence $\{\norm{A_n}\}_{n\in\mathbb{N}}$ is bounded by
+                $$M = \max\left\{\norm{A_1},\dots,\norm{A_{N-1}},\,\varepsilon + \norm{A_N}\right\} < \infty.$$
+              </p>
+              <p>
+                For each $f \in V$, by continuity of the norm,
+                $$\norm{A f}_W = \norm{\lim_{n\to\infty}A_n f}_W = \lim_{n\to\infty} \norm{A_n f}_W \le \lim_{n\to\infty} \norm{A_n}\norm{f}_V \le M\norm{f}_V.$$
+                Therefore $A$ is bounded and $\norm{A} \le M$.
+              </p>
+            </li>
+            <li>
+              <p><i>(Convergence)</i></p>
+              <p>
+                For all non-zero $f\in V$, since
+                $$
+                  \frac{\norm{(A_n-A_m)f}_W}{\norm f_V}
+                  \leq\sup_{\substack{f\in V \\ f\neq 0}}\frac{\norm{(A_n-A_m)f}_W}{\norm f_V}
+                  =\norm{A_n-A_m}<\varepsilon,
+                $$
+                we have
+                $$\norm{(A_n-A_m)f}_W<\varepsilon\cdot\norm f_V.$$
+              </p>
+              <p>
+                It follows that
+                $$\lim_{m\to\infty}\norm{A_nf-A_mf}_W\leq\varepsilon\cdot\norm f_V,$$
+                and since the norm $\norm\cdot_W$ is continuous,
+                $$
+                  \lim_{m\to\infty}\norm{A_nf-A_mf}_W=\norm{A_nf-\lim_{m\to\infty}A_mf}_W=\norm{A_nf-Af}_W\leq\varepsilon\cdot\norm f_V,
+                $$
+                which follows that
+                $$
+                  \norm{A_n-A}=\sup_{\substack{f\in V \\ f\neq0}}\frac{\norm{(A_n-A)f}_W}{\norm f_V}\leq\varepsilon.
+                $$
+              </p>
+              <p>
+                Thus, $A_n$ converges to $A$.
+              </p>
+            </li>
+          </ol>
+          <p>Note that $A\in\mathcal{L}(V,W)$ since $A$ is linear and bounded. Therefore, any Cauchy sequence in $\mathcal{L}(V,W)$ converges in $\mathcal{L}(V,W)$, so $\mathcal{L}(V,W)$ is complete.</p>
+        </details>
+      </theorem>
+                  
+      <div class="callout">Recall that $(\mathcal{L}(V,W), \norm\cdot)$ is Banach, even if $V$ is only normed.</div>
+
+      <p>
+        An important insight about the domain of a bounded linear map is the <xref to="thm:blt-theorem"><em>BLT theorem</em></xref> (bounded linear transformation theorem).
+      </p>
+      <theorem id="thm:blt-theorem" data-title="BLT Theorem">
+        <p>
+          Let $V$ be a normed vector space and $W$ be a Banach space. Consider a bounded linear map $A:\mathcal{D}_A\to W$
+          densely defined on $\mathcal{D}_A\subseteq V$ where $\overline{\mathcal{D}_A}=V$.
+        </p>
+        <p>
+          Then there is a unique extension of $A$ to a <em>bounded</em> map $\hat{A}\in\mathcal{L}(V,W)$,
+          which satisfies, of course, $\hat{A}|_{\mathcal{D}_A}=A$.
+        </p>
+        <div class="callout">
+          In other words, we may (and always will) extend any <em>bounded</em> linear map
+          to the entire normed space at hand. But, unbounded operators may not.
+        </div>
+        <details class="proof"><summary></summary>
+          <p>
+            Let $A\in\mathcal{L}(\mathcal{D}_A,W)$.
+          </p>
+          <ol class="roman-italic">
+            <li>
+              <p><i>(Construction)</i></p>
+              <p>
+                Let $f\in V$ and consider a sequence $\{ f_n\}\subseteq\mathcal{D}_A$ with $\lim_{n\to\infty}f_n=f$.
+                Then $\{f_n\}$ is certainly a Cauchy sequence. Note that $\{Af_n\}$ is again a Cauchy sequence in $W$.
+                Since $W$ is Banach,
+                $$\lim_{n\to\infty}Af_n\in W.$$
+              </p>
+              <p>
+                Define the extension $\hat{A}:V\to W$ by
+                $$f\mapsto \hat{A}f=\lim_{n\to\infty}Af_n.$$
+              </p>
+            </li>
+            <li>
+              <p><i>(Well-defined)</i></p>
+              <p>
+                This definition is well-defined, i.e. does not depend on the choice of $\{f_n\}$.
+                Moreover, we can always construct such $\{f_n\}$ since $\mathcal{D}_A$ is dense in $V$.
+              </p>
+              <p><i>(Omitted)</i></p>
+            </li>
+            <li>
+              <p><i>(Linearity)</i></p>
+              <p>
+                For $f_n\to f$ and $g_n\to g$,
+                $$
+                  \hat{A}f+\hat{A}g=\lim_{n\to\infty}Af_n+\lim_{n\to\infty}Ag_n
+                  = \lim_{n\to\infty}A(f_n+g_n)=\hat{A}(f+g),
+                $$
+                since $(f_n+g_n)\to(f+g)$.
+              </p>
+            </li>
+            <li>
+              <p><i>(Boundedness)</i></p>
+              <p>$\hat A$ is bounded and that, indeed $\norm{\hat A}=\norm A$.</p>
+              <p><i>(Omitted)</i></p>
+            </li>
+            <li>
+              <p><i>(Uniqueness)</i></p>
+              <p><i>(Omitted)</i></p>
+            </li>
+          </ol>
+          <p>This completes the proof.</p>
+        </details>
+      </theorem>
+
+      <definition data-title="Dual space">
+        <p>
+          Let $(V,\norm\cdot_V)$ be a normed space. The <dfn>(topological) dual space</dfn>
+          with respect to $V$ is defined by
+          $$
+            \left(V^*,\norm\cdot\right)=\left(\mathcal{L}(V,\mathbb{C}),\norm\cdot_{\mathcal{L}(V,\mathbb{C})}\right).
+          $$
+        </p>
+      </definition>
+
+      <theorem>
+        Let $(V,\norm\cdot_V)$ be a normed space. Then for all linear functionals $l:V\to\mathbb{C}$, $l$ is continuous if and only if $l$ is bounded.
+      </theorem>
+
+      <div class="callout">
+        In finite-dimensional spaces, every linear functional is automatically continuous,
+        so the algebraic and (topological) duals coincide. In infinite-dimensional normed
+        spaces, the (topological) dual $V^*$ denotes the space of continuous (i.e. bounded)
+        linear functionals $V\to\mathbb C$.
+      </div>
+
+      <definition>
+        Let $V$ be a normed vector space.
+        Sequence $\{f_n\}_{n\in\mathbb{N}}\subseteq V$ is said to
+        <ol class="roman-italic">
+          <li>
+            <p><dfn>converge strongly</dfn> to $f\in V$ if</p>
+            $$\forall\varepsilon>0,\ \exists N\in\mathbb{N},\ \forall n\geq N,\ \norm{f-f_n}<\varepsilon,$$
+          </li>
+          <li>
+            <p><dfn>converge weakly</dfn> to $f\in V$ if</p>
+            $$\forall l\in V^*,\ l(f_n)\to l(f)\textrm{ in }\mathbb{C}.$$
+          </li>
+        </ol>
+      </definition>
+
+      <theorem>
+        Strong convergence implies weak convergence.
+      </theorem>
+    </section>
+  </article>
+</main>
+</body>
+</html>
