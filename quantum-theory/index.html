@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lectures on Quantum Theory</title>
 
-<link href="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@1.0.0/style.css" rel="stylesheet">
-<script defer src="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@1.0.0/script.js"></script>
+<link href="../../mathjax-article-template/style.css" rel="stylesheet">
+<script defer src="../../mathjax-article-template/script.js"></script>
 </head>
 <body>
 <header class="site-header" role="banner">
@@ -20,18 +20,27 @@
     <h1 class="title" itemprop="headline">Lectures on Quantum Theory</h1>
     <p class="authors" itemprop="author">Lecturer: Dr. Frederic P. Schuller; Documented by Hang Park</p>
 
-    <section class="sec" aria-labelledby="banach-space">
-      <h2 class="section-title" id="banach-space">Banach Spaces</h2>
+    <section class="sec" aria-labelledby="introduction">
+      <h2 class="section-title" id="introduction">Introduction</h2>
+
+      <definition id="def:completeness" data-title="Completeness">
+        A metric space $X$ is called <dfn>complete</dfn>
+        if every Cauchy sequence in $X$ converges to an element of $X$.
+      </definition>
+    </section>
+
+    <section class="sec" aria-labelledby="banach-spaces">
+      <h2 class="section-title" id="banach-spaces">Banach Spaces</h2>
 
       Every <em>Hilbert space</em> is a <em>Banach space</em>,
       but the converse is not true.
 
       <definition id="def:banach-space" data-title="Banach space">
         A normed vector space $(V, \norm\cdot)$ is called a <dfn>Banach space</dfn>
-        if it is complete with respect to the norm $\norm\cdot$.
+        if it is <xref to="def:completeness">complete</xref> with respect to the norm $\norm\cdot$.
       </definition>
 
-      <definition>
+      <definition id="def:boundedness" data-title="Boundedness">
         Let $V$ and $W$ be normed vector spaces.
         Then, a linear map $A:V\linearto W$ is said to be <dfn>bounded</dfn> if
         $$\sup_{\substack{f\in V \\ f\neq 0}}\frac{\norm{Af}_W}{\norm f_V}=\sup_{\norm f_V=1}\norm{Af}_W<\infty.$$
@@ -96,7 +105,7 @@
         </details>
       </definition>
 
-      <theorem>
+      <theorem id="thm:bounded-linear-map-is-banach">
         <p>
           Let $V$ be a normed vector space and $W$ be a Banach space.
           Then the set
@@ -295,6 +304,68 @@
 
       <theorem>
         Strong convergence implies weak convergence.
+      </theorem>
+    </section>
+
+    <section class="sec" aria-labelledby="separable-hilbert-space">
+      <h2 class="section-title" id="separable-hilbert-spaces">Separable Hilbert Spaces</h2>
+
+      <definition id="def:induced-norm">
+        <p>
+          Let $(V,\inner{\cdot}{\cdot})$ be an inner product space.
+          The <dfn>induced norm</dfn> $\norm\cdot_{\inner{\cdot}{\cdot}}$ by the inner product $\inner{\cdot}{\cdot}$
+          is defined by
+          $$\norm\psi_{\inner{\cdot}{\cdot}} = \sqrt{\inner{\psi}{\psi}}$$
+          for $\psi\in V$.
+        </p>
+      </definition>
+
+      <theorem>
+        An inner product space also forms a normed space with respect to the <xref to="def:induced-norm">induced norm</xref> by its inner product.
+      </theorem>
+
+      <definition id="def:hilbert-space" data-title="Hilbert space">
+        <p>
+          A (complex) vector space $(\hilbert,+,\cdot)$ is called a <dfn>(complex) Hilbert space</dfn>
+          if the following conditions are satisfied:
+        </p>
+        <ol class="roman-italic">
+          <li>$\hilbert$ is equipped with a sesquilinear inner product $\inner{\cdot}{\cdot}$;</li>
+          <li>The inner product <xref to="def:induced-norm">induces</xref> a norm $\norm\cdot$ on $\hilbert$;</li>
+          <li>$\hilbert$ is <xref to="def:completeness">complete</xref> with respect to this norm.</li>
+        </ol>
+
+        <div class="callout">
+          The norm $\norm\cdot:\hilbert\to\mathbb{R}$ of the Hilbert space $\hilbert$,
+          which is defined by $\psi\mapsto\sqrt{\inner{\psi}{\psi}}$, makes $(\hilbert,+,\cdot,\norm\cdot)$ into a <xref to="def:banach-space">Banach space</xref>.
+        </div>
+      </definition>
+
+      <theorem>
+        <p>Let $\hilbert$ be a Hilbert space. Then</p>
+        <ol class="roman-italic">
+          <li>$\left(\mathcal{L}(\hilbert,\hilbert),\norm\cdot_{\mathcal{L}(\hilbert,\hilbert)}\right)$ is a Banach space.</li>
+          <li>$\left(\hilbert^*,\norm\cdot_{\hilbert^*}\right)=\left(\mathcal{L}(\hilbert,\mathbb{C}),\norm\cdot_{\hilbert,\mathbb{C}}\right)$ is a Banach space.</li>
+        </ol>
+        <details class="proof"><summary></summary>
+          <xref to="thm:bounded-linear-map-is-banach"></xref>. Trivial.
+        </details>
+      </theorem>
+
+      We will see that $\hilbert^*$ is even a Hilbert space. It means there exists such inner product which induces the norm $\norm\cdot_{\hilbert^*}$.
+
+      <theorem>
+        <p>
+          Let $(V, \norm\cdot)$ be a normed vector space.
+          Then the following statements are equivalent:
+        </p>
+        <ol class="roman-italic">
+          <li>There exists a sesquilinear inner product $\inner{\cdot}{\cdot}$ in $V$ which induces the norm $\norm\cdot$.</li>
+          <li>
+            For all $f,g\in V$, the parallelogram identity holds:
+            $$\norm{f+g}+\norm{f-g}=2\norm f+2\norm g.$$
+          </li>
+        </ol>
       </theorem>
     </section>
   </article>
