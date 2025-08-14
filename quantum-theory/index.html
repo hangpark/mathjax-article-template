@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lectures on Quantum Theory</title>
 
-<link href="../../mathjax-article-template/style.css" rel="stylesheet">
-<script defer src="../../mathjax-article-template/script.js"></script>
+<link href="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@52b175d/style.css" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@52b175d/script.js"></script>
 </head>
 <body>
 <header class="site-header" role="banner">
@@ -23,39 +23,143 @@
     <section class="sec" aria-labelledby="introduction">
       <h2 class="section-title" id="introduction">Introduction</h2>
 
-      <definition id="def:completeness" data-title="Completeness">
-        A metric space $X$ is called <dfn>complete</dfn>
+      <definition id="def:complete" data-title="Complete">
+        A metric space $X$ is said to be <dfn>complete</dfn>
         if every Cauchy sequence in $X$ converges to an element of $X$.
       </definition>
+
+      <definition id="def:norm" data-title="Norm">
+        <p>
+          Let $V$ be a (complex) vector space.
+          Then, a map $\norm{\cdot}:V\to[0,\infty)$ is called a <dfn>norm</dfn> on $V$
+          if the following conditions are satisfied:
+        </p>
+        <ol>
+          <li><strong>(Absolute homogeneity)</strong> For all $v\in V$, $\norm{\alpha v}=\lvert\alpha\rvert\norm{v}$.</li>
+          <li><strong>(Triangle inequality)</strong> For all $u,v\in V$, $\norm{u+v}\leq\norm{u} + \norm{v}$.</li>
+          <li><strong>(Positive-definite)</strong> $\norm{v}\geq0$ for all $v\in V$ and the equality holds if and only if $v=0$.</li>
+        </ol>
+      </definition>
+
+      <definition id="def:normed-vector-space" data-title="Normed vector space">
+        A vector space equipped with a <xref>norm</xref> is called a <dfn>normed vector space</dfn>.
+      </definition>
+
+      <corollary>
+        Any <xref>normed vector space</xref> is a <xref>metric space</xref> with the metric $d(u,v)=\norm{u-v}$.
+      </corollary>
+
+      <definition id="def:inner-product" data-title="Inner product">
+        <p>
+          Let $V$ be a (complex) vector space.
+          A map $\inner{\cdot}{\cdot}:V\times V\to\mathbb{C}$ is an <dfn>inner product</dfn> on $V$ if:
+        </p>
+        <ol>
+          <li><strong>(Hermitian symmetry)</strong> $\inner{u}{v}=\overline{\inner{v}{u}}$ for all $u,v\in V$.</li>
+          <li>
+            <strong>(Sesquilinearity)</strong>
+            $\inner{\cdot}{\cdot}:V\times V\to\mathbb{C}$ is linear in the first argument and conjugate-linear in the second,
+            i.e. for all $u,v,w\in V$ and $\alpha,\beta\in\mathbb{C}$,
+            $$\begin{aligned}
+              \inner{\alpha u+\beta v}{w}&=\alpha\inner{u}{w}+\beta\inner{v}{w},\\
+              \inner{u}{\alpha v+\beta w}&=\overline\alpha\inner{u}{v}+\overline\beta\inner{u}{w}.
+            \end{aligned}$$
+          </li>
+          <li><strong>(Positive definiteness)</strong> $\inner{v}{v}\ge 0$ for all $v\in V$, and $\inner{v}{v}=0$ if and only if $v=0$.</li>
+        </ol>
+      </definition>
+
+      <definition id="def:inner-product-space">
+        A vector space equipped with an <xref>inner product</xref> is called an <dfn>inner product space</dfn>.
+      </definition>
+
+      <definition id="def:induced-norm">
+        <p>
+          Let $(V,\inner{\cdot}{\cdot})$ be an <xref>inner product space</xref>.
+          The <dfn>induced norm</dfn> $\norm{\cdot}_{\inner{\cdot}{\cdot}}$ is
+          $$\norm{\psi}_{\inner{\cdot}{\cdot}} = \sqrt{\inner{\psi}{\psi}}$$
+          where $\psi\in V$.
+        </p>
+
+        <footer>
+          Hereafter, the subscript for the induced norm may be omitted.
+        </footer>
+      </definition>
+
+      <corollary>
+        Any <xref>inner product space</xref> also forms a <xref>normed vector space</xref> with respect to the <xref>induced norm</xref> by its inner product.
+      </corollary>
+
+      <theorem id="thm:cauchy-schwarz-inequality" data-title="Cauchy&ndash;Schwarz inequality">
+        <p>
+          Let $\left(V, \inner{\cdot}{\cdot}\right)$ be an <xref>inner product space</xref>.
+          Then for all $u,v\in V$, the following inequality holds:
+          $$\left\lvert\inner{u}{v}\right\rvert\leq\norm{u}\cdot\norm{v}$$
+          where $\norm{\cdot}$ is the <xref>induced norm</xref> by the inner product $\inner{\cdot}{\cdot}$.
+        </p>
+        <p>
+          Moreover, the equality holds if and only if $u$ and $v$ are linearly dependent.
+        </p>
+
+        <details class="proof"><summary></summary>
+          <p>
+            If $u=0$ or $v=0$ then claim is trivial. Assume $u,v\neq0$ and set $f(\alpha)=\norm{u-\alpha v}^2$.
+          </p>
+          <p>
+            By sesquilinearity and Hermitian symmetry of the <xref to="def:inner-product">inner product</xref>,
+            $$\begin{aligned}
+              0\leq f(\alpha) &=\norm{u-\alpha v}^2
+              = \inner{u-\alpha v}{u-\alpha v} \\
+              &= \inner{u}{u-\alpha v}-\alpha\inner{v}{u-\alpha v}
+              = \inner{u}{u} - \overline\alpha\inner{u}{v} - \alpha\inner{v}{u} + \alpha\overline\alpha\inner{v}{v} \\
+              &= \norm{u}^2 - \alpha\overline{\inner{u}{v}} - \overline\alpha\inner{u}{v} + \lvert\alpha\rvert^2\norm{v}^2.
+            \end{aligned}$$
+            Taking $\alpha=\inner{u}{v}/\norm{v}^2$ gives
+            $$\begin{aligned}
+              f\left(\frac{\inner{u}{v}}{\norm{v}^2}\right)
+              &= \norm{u}^2 - \frac{\inner{u}{v}}{\norm{v}^2}\overline{\inner{u}{v}} - \overline{\frac{\inner{u}{v}}{\norm{v}^2}}\inner{u}{v} + \left\lvert\frac{\inner{u}{v}}{\norm{v}^2}\right\rvert^2\norm{v}^2 \\
+              &= \norm{u}^2 - \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^2} - \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^2} + \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^4}\norm{v}^2 \\
+              &= \norm{u}^2 - \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^2} \geq 0,
+            \end{aligned}$$
+            hence $\left\lvert\inner{u}{v}\right\rvert\leq\norm{u}\cdot\norm{v}$ holds.
+          </p>
+          <p>
+            Equality holds if and only if $u-\alpha v=0$ with $\alpha=\inner{u}{v}/\norm{v}^2$,
+            i.e.,
+            $$u-\frac{\inner{u}{v}}{\norm{v}^2}v=0,$$
+            so $u$ and $v$ are linearly dependent.
+          </p>
+        </details>
+      </theorem>
     </section>
 
     <section class="sec" aria-labelledby="banach-spaces">
       <h2 class="section-title" id="banach-spaces">Banach Spaces</h2>
 
-      Every <em>Hilbert space</em> is a <em>Banach space</em>,
+      Every <xref>Hilbert space</xref> is a <xref>Banach space</xref>,
       but the converse is not true.
 
       <definition id="def:banach-space" data-title="Banach space">
-        A normed vector space $(V, \norm\cdot)$ is called a <dfn>Banach space</dfn>
-        if it is <xref to="def:completeness">complete</xref> with respect to the norm $\norm\cdot$.
+        A <xref>normed vector space</xref> $(V, \norm{\cdot})$ is called a <dfn>Banach space</dfn>
+        if it is <xref to="def:complete">complete</xref> with respect to the norm $\norm{\cdot}$.
       </definition>
 
-      <definition id="def:boundedness" data-title="Boundedness">
-        Let $V$ and $W$ be normed vector spaces.
-        Then, a linear map $A:V\linearto W$ is said to be <dfn>bounded</dfn> if
-        $$\sup_{\substack{f\in V \\ f\neq 0}}\frac{\norm{Af}_W}{\norm f_V}=\sup_{\norm f_V=1}\norm{Af}_W<\infty.$$
+      <definition id="def:bounded-operator" data-title="Bounded operator">
+        Let $V$ and $W$ be <xref to="def:normed-vector-space">normed vector spaces</xref>.
+        A linear map (operator) $A:V\to W$ is <dfn>bounded</dfn> if
+        $$\sup_{\substack{f\in V \\ f\neq 0}}\frac{\norm{Af}_W}{\norm{f}_V}=\sup_{\norm{f}_V=1}\norm{Af}_W<\infty.$$
       </definition>
 
       <definition id="def:operator-norm" data-title="Operator norm">
-        The <dfn>operator norm</dfn> of a bounded operator $A:V\linearto W$ is defined by
-        $$\norm A=\sup_{\norm f_V=1}\norm{Af}_W.$$
+        The <dfn>operator norm</dfn> of a <xref>bounded operator</xref> $A:V\to W$ is
+        $$\norm{A}=\sup_{\norm{f}_V=1}\norm{Af}_W.$$
 
         <details class="example"><summary></summary>
           Let $V=W$ and define a map $\mathrm{id}_W:W\rightarrow W$ by $f\mapsto f$. Then
           $$
             \norm{\mathrm{id}_W}
-            =\sup_{\norm f_W=1}\norm{\mathrm{id}_W f}_W
-            =\sup_{\norm f_W=1}\norm f_W=1,
+            =\sup_{\norm{f}_W=1}\norm{\mathrm{id}_W f}_W
+            =\sup_{\norm{f}_W=1}\norm{f}_W=1,
           $$
           so $\mathrm{id}_W$ is bounded with $\norm{\mathrm{id}_W}=1$.
         </details>
@@ -64,17 +168,17 @@
           <p>
             Let $W=C^0([0,1])=\{f:[0,1]\to\mathbb{C}\mid f\mathrm{\ is\ continuous}\}$.
             Define a norm by $\norm{f}_\infty=\sup_{x\in[0,1]}\lvert f(x)\rvert$. (It is called the <dfn>maximum norm</dfn>.)
-            Then we can easily show that $(W,\norm\cdot_\infty)$ is complete, so is a Banach space.
+            Then we can easily show that $(W,\norm{\cdot}_\infty)$ is complete, so is a Banach space.
           </p>
           <p>
             Now define $P:C^1([0,1])\to C^0([0,1])$ by $f\mapsto f'$. Clearly, $P$ is linear.
           </p>
           <p class="callout">
-            Note that $C^1([0,1])\subseteq C^0([0,1])$, so we can inherit a norm $\norm\cdot_\infty$ from $C^0([0,1])$ to $C^1([0,1])$.
-            We can easily show that $(C^1([0,1]),\norm\cdot_\infty)$ is not a Banach space, but still is a normed vector space.
+            Note that $C^1([0,1])\subseteq C^0([0,1])$, so we can inherit a norm $\norm{\cdot}_\infty$ from $C^0([0,1])$ to $C^1([0,1])$.
+            We can easily show that $(C^1([0,1]),\norm{\cdot}_\infty)$ is not a Banach space, but still is a normed vector space.
           </p>
           <p>
-            Claim that $P$ is not bounded.
+            We claim that $P$ is not bounded.
           </p>
           <proof>
             <p>
@@ -85,7 +189,7 @@
             </p>
             <p>
               Thus,
-              $$\norm P=\sup_{\norm f_\infty=1}\norm{Pf}_\infty\geq\sup_{n\in\mathbb{N}}\norm{Pf_n}_\infty=\sup_{n\in\mathbb{N}}2\pi n=\infty,$$
+              $$\norm{P}=\sup_{\norm{f}_\infty=1}\norm{Pf}_\infty\geq\sup_{n\in\mathbb{N}}\norm{Pf_n}_\infty=\sup_{n\in\mathbb{N}}2\pi n=\infty,$$
               therefore, $P$ is not bounded.
             </p>
           </proof>
@@ -105,14 +209,14 @@
         </details>
       </definition>
 
-      <theorem id="thm:bounded-linear-map-is-banach">
+      <theorem id="thm:bounded-operator-space-is-banach">
         <p>
-          Let $V$ be a normed vector space and $W$ be a Banach space.
+          Let $V$ be a <xref>normed vector space</xref> and $W$ be a <xref>Banach space</xref>.
           Then the set
-          $$\mathcal{L}(V,W)=\{A:V\linearto W\mid\norm A<\infty\}$$
-          is a Banach space if equipped with <xref to="def:operator-norm">the operator norm</xref> $\norm\cdot_{\mathcal{L}(V,W)}$.
+          $$\mathcal{L}(V,W)=\{A:V\xrightarrow{\ \textrm{linear}\ }W\mid\norm{A}<\infty\}$$
+          is a Banach space if equipped with the <xref>operator norm</xref> $\norm{\cdot}_{\mathcal{L}(V,W)}$.
         </p>
-        <details class="proof"><summary>Proof. (Completeness)</summary>
+        <details class="proof"><summary>Proof. (completeness)</summary>
           <p>
             Assume that $\{A_n\}_{n\in\mathbb{N}}$ is a Cauchy sequence in $\mathcal{L}(V,W)$.
             Then for a given $\varepsilon>0$, there exists
@@ -125,13 +229,13 @@
               <p>
                 For each $f\in V$, we have
                 $$
-                  \norm{A_nf-A_mf}_W=\norm{(A_n-A_m)f}_W\leq\norm{A_n-A_m}\cdot\norm f_V
-                  <\varepsilon\cdot\norm f_V
+                  \norm{A_nf-A_mf}_W=\norm{(A_n-A_m)f}_W\leq\norm{A_n-A_m}\cdot\norm{f}_V
+                  <\varepsilon\cdot\norm{f}_V
                 $$
-                and $\norm f_V$ is finite, $\{A_nf\}_{n\in\mathbb{N}}\subseteq W$ is also a Cauchy sequence.
+                and $\norm{f}_V$ is finite, $\{A_nf\}_{n\in\mathbb{N}}\subseteq W$ is also a Cauchy sequence.
               </p>
               <p>
-                Since $(W,\norm\cdot_W)$ is a Banach space, the limit $\lim_{n\to\infty}A_nf$ exists in $W$.
+                Since $(W,\norm{\cdot}_W)$ is a Banach space, the limit $\lim_{n\to\infty}A_nf$ exists in $W$.
               </p>
               <p>
                 Now, define a map $A:V\to W$ by $f\mapsto\lim_{n\to\infty}A_nf$.
@@ -142,10 +246,10 @@
               <p>
                 For all $f,g\in V$ and for all $\lambda\in\mathbb{C}$,
                 $$\begin{aligned}
-                  A(f+g)&=\lim_{n\to\infty}A_n(f+_Vg)
-                  =\lim_{n\to\infty}(A_nf+_WA_ng)
-                  =\lim_{n\to\infty}A_nf+\lim_{n\to\infty}A_ng \\
-                  &=Af+Ag,
+                  A(f+g)&=\lim_{n\to\infty}A_n(f+g)
+                  =\lim_{n\to\infty}(A_nf+A_ng) \\
+                  &=\lim_{n\to\infty}A_nf+\lim_{n\to\infty}A_ng
+                  =Af+Ag,
                 \end{aligned}$$
                 and similarly $A(\lambda f)=\lambda\cdot Af$.
               </p>
@@ -169,23 +273,23 @@
               <p>
                 For all non-zero $f\in V$, since
                 $$
-                  \frac{\norm{(A_n-A_m)f}_W}{\norm f_V}
-                  \leq\sup_{\substack{f\in V \\ f\neq 0}}\frac{\norm{(A_n-A_m)f}_W}{\norm f_V}
+                  \frac{\norm{(A_n-A_m)f}_W}{\norm{f}_V}
+                  \leq\sup_{\substack{f\in V \\ f\neq 0}}\frac{\norm{(A_n-A_m)f}_W}{\norm{f}_V}
                   =\norm{A_n-A_m}<\varepsilon,
                 $$
                 we have
-                $$\norm{(A_n-A_m)f}_W<\varepsilon\cdot\norm f_V.$$
+                $$\norm{(A_n-A_m)f}_W<\varepsilon\cdot\norm{f}_V.$$
               </p>
               <p>
                 It follows that
-                $$\lim_{m\to\infty}\norm{A_nf-A_mf}_W\leq\varepsilon\cdot\norm f_V,$$
-                and since the norm $\norm\cdot_W$ is continuous,
+                $$\lim_{m\to\infty}\norm{A_nf-A_mf}_W\leq\varepsilon\cdot\norm{f}_V,$$
+                and since the norm $\norm{\cdot}_W$ is continuous,
                 $$
-                  \lim_{m\to\infty}\norm{A_nf-A_mf}_W=\norm{A_nf-\lim_{m\to\infty}A_mf}_W=\norm{A_nf-Af}_W\leq\varepsilon\cdot\norm f_V,
+                  \lim_{m\to\infty}\norm{A_nf-A_mf}_W=\norm{A_nf-\lim_{m\to\infty}A_mf}_W=\norm{A_nf-Af}_W\leq\varepsilon\cdot\norm{f}_V,
                 $$
                 which follows that
                 $$
-                  \norm{A_n-A}=\sup_{\substack{f\in V \\ f\neq0}}\frac{\norm{(A_n-A)f}_W}{\norm f_V}\leq\varepsilon.
+                  \norm{A_n-A}=\sup_{\substack{f\in V \\ f\neq0}}\frac{\norm{(A_n-A)f}_W}{\norm{f}_V}\leq\varepsilon.
                 $$
               </p>
               <p>
@@ -197,24 +301,28 @@
         </details>
       </theorem>
                   
-      <div class="callout">Recall that $(\mathcal{L}(V,W), \norm\cdot)$ is Banach, even if $V$ is only normed.</div>
+      <div class="callout">Note that $(\mathcal{L}(V,W), \norm{\cdot})$ is Banach, even if $V$ is only normed.</div>
 
       <p>
-        An important insight about the domain of a bounded linear map is the <xref to="thm:blt-theorem"><em>BLT theorem</em></xref> (bounded linear transformation theorem).
+        An important insight about the domain of a bounded linear map is the <xref to="thm:blt"><em>BLT theorem</em></xref> (bounded linear transformation theorem).
       </p>
-      <theorem id="thm:blt-theorem" data-title="BLT Theorem">
+      <theorem id="thm:blt" data-title="BLT theorem">
+        <div class="callout">
+          BLT stands for &lsquo;Bounded Linear Transformation&rsquo;.
+        </div>
         <p>
-          Let $V$ be a normed vector space and $W$ be a Banach space. Consider a bounded linear map $A:\mathcal{D}_A\to W$
-          densely defined on $\mathcal{D}_A\subseteq V$ where $\overline{\mathcal{D}_A}=V$.
+          Let $V$ be a <xref>normed vector space</xref> and $W$ be a <xref>Banach space</xref>.
+          Consider a linear map $A:\mathcal{D}_A\to W$ that is bounded with respect to the subspace norm on $\mathcal{D}_A$, where $\mathcal{D}_A\subseteq V$ is dense ($\overline{\mathcal{D}_A}=V$).
         </p>
         <p>
-          Then there is a unique extension of $A$ to a <em>bounded</em> map $\hat{A}\in\mathcal{L}(V,W)$,
+          Then there is a unique extension of $A$ to a <em><xref to="def:bounded-operator">bounded</xref></em> map $\hat{A}\in\mathcal{L}(V,W)$,
           which satisfies, of course, $\hat{A}|_{\mathcal{D}_A}=A$.
         </p>
-        <div class="callout">
-          In other words, we may (and always will) extend any <em>bounded</em> linear map
+        <footer>
+          In other words, we may (and always will) extend any <em>bounded</em> operator
           to the entire normed space at hand. But, unbounded operators may not.
-        </div>
+        </footer>
+
         <details class="proof"><summary></summary>
           <p>
             Let $A\in\mathcal{L}(\mathcal{D}_A,W)$.
@@ -254,7 +362,7 @@
             </li>
             <li>
               <p><i>(Boundedness)</i></p>
-              <p>$\hat A$ is bounded and that, indeed $\norm{\hat A}=\norm A$.</p>
+              <p>$\hat A$ is bounded and that, indeed $\norm{\hat A}=\norm{A}$.</p>
               <p><i>(Omitted)</i></p>
             </li>
             <li>
@@ -268,32 +376,32 @@
 
       <definition data-title="Dual space">
         <p>
-          Let $(V,\norm\cdot_V)$ be a normed space. The <dfn>(topological) dual space</dfn>
-          with respect to $V$ is defined by
+          Let $(V,\norm{\cdot}_V)$ be a <xref>normed vector space</xref>. The <dfn>(topological) dual space</dfn> of $V$ is defined by
           $$
-            \left(V^*,\norm\cdot\right)=\left(\mathcal{L}(V,\mathbb{C}),\norm\cdot_{\mathcal{L}(V,\mathbb{C})}\right).
+            \left(V^*,\norm{\cdot}\right)=\left(\mathcal{L}(V,\mathbb{C}),\norm{\cdot}_{\mathcal{L}(V,\mathbb{C})}\right).
           $$
         </p>
+        <footer>See <xref to="thm:bounded-operator-space-is-banach"></xref> for the definition of $\mathcal{L}(V,\mathbb{C})$.</footer>
       </definition>
 
-      <theorem>
-        Let $(V,\norm\cdot_V)$ be a normed space. Then for all linear functionals $l:V\to\mathbb{C}$, $l$ is continuous if and only if $l$ is bounded.
+      <theorem id="thm:bounded-iff-continuous">
+        Let $(V,\norm{\cdot}_V)$ be a <xref>normed vector space</xref>. Then for all linear functionals $l:V\to\mathbb{C}$, $l$ is continuous if and only if $l$ is bounded.
       </theorem>
 
       <div class="callout">
         In finite-dimensional spaces, every linear functional is automatically continuous,
         so the algebraic and (topological) duals coincide. In infinite-dimensional normed
         spaces, the (topological) dual $V^*$ denotes the space of continuous (i.e. bounded)
-        linear functionals $V\to\mathbb C$.
+        linear functionals $V\to\mathbb{C}$.
       </div>
 
-      <definition>
-        Let $V$ be a normed vector space.
-        Sequence $\{f_n\}_{n\in\mathbb{N}}\subseteq V$ is said to
-        <ol class="roman-italic">
+      <definition id="strong-and-weak-convergence" data-title="Strong & weak convergence">
+        Let $V$ be a <xref>normed vector space</xref>.
+        A sequence $\{f_n\}_{n\in\mathbb{N}}\subseteq V$ is said to
+        <ol>
           <li>
             <p><dfn>converge strongly</dfn> to $f\in V$ if</p>
-            $$\forall\varepsilon>0,\ \exists N\in\mathbb{N},\ \forall n\geq N,\ \norm{f-f_n}<\varepsilon,$$
+            $$\forall\varepsilon>0,\ \exists N\in\mathbb{N},\ \forall n\geq N,\ \norm{f-f_n}<\varepsilon.$$
           </li>
           <li>
             <p><dfn>converge weakly</dfn> to $f\in V$ if</p>
@@ -303,70 +411,134 @@
       </definition>
 
       <theorem>
-        Strong convergence implies weak convergence.
+        <p>
+          <xref to="strong-and-weak-convergence">Strong convergence</xref> implies <xref to="strong-and-weak-convergence">weak convergence</xref>.
+        </p>
+        <details class="proof"><summary></summary>
+          For all $l\in V^*=\mathcal{L}(V,\mathbb{C})$, $l$ is bounded and hence continuous by <xref to="thm:bounded-iff-continuous"></xref>. Thus $f_n\to f$ implies $l(f_n)\to l(f)$.
+        </details>
       </theorem>
     </section>
 
     <section class="sec" aria-labelledby="separable-hilbert-space">
       <h2 class="section-title" id="separable-hilbert-spaces">Separable Hilbert Spaces</h2>
 
-      <definition id="def:induced-norm">
+      <section class="subsec" aria-labelledby="hilbert-space">
+        <h3 class="section-title" id="hilbert-spaces">Hilbert Spaces</h3>
+
+        <definition id="def:hilbert-space" data-title="Hilbert space">
+          <p>
+            A <xref to="def:inner-product-space">(complex) inner product space</xref> $(\hilbert,\inner{\cdot}{\cdot})$ is called a <dfn>(complex) Hilbert space</dfn>
+            if the following conditions are satisfied:
+          </p>
+          <ol>
+            <li>$\hilbert$ is equipped with an <xref>inner product</xref> $\inner{\cdot}{\cdot}$.</li>
+            <li>The inner product <xref to="def:induced-norm">induces a norm</xref> $\norm{\cdot}$ on $\hilbert$.</li>
+            <li>$\hilbert$ is <xref to="def:complete">complete</xref> with respect to this norm.</li>
+          </ol>
+
+          <div class="callout">
+            The norm $\norm{\cdot}:\hilbert\to\mathbb{R}$ of the Hilbert space $\hilbert$,
+            which is defined by $\psi\mapsto\sqrt{\inner{\psi}{\psi}}$, makes $(\hilbert,\norm{\cdot})$ into a <xref>Banach space</xref>.
+          </div>
+        </definition>
+
+        <corollary id="cor:dual-of-hilbert-space-is-banach">
+          <p>Let $\hilbert$ be a <xref>Hilbert space</xref>. Then</p>
+          <ol>
+            <li>$\left(\mathcal{L}(\hilbert,\hilbert),\norm{\cdot}_{\mathcal{L}(\hilbert,\hilbert)}\right)$ is a <xref>Banach space</xref>.</li>
+            <li>$\left(\hilbert^*,\norm{\cdot}_{\hilbert^*}\right)=\left(\mathcal{L}(\hilbert,\mathbb{C}),\norm{\cdot}_{\mathcal{L}(\hilbert,\mathbb{C})}\right)$ is a Banach space.</li>
+          </ol>
+          <details class="proof"><summary></summary>
+            <xref to="thm:bounded-operator-space-is-banach"></xref>. Trivial.
+          </details>
+        </corollary>
+
+        We will see that $\hilbert^*$ is even a Hilbert space.
+
+        <theorem id="thm:jordan-von-neumann" data-title="Jordan&ndash;von Neumann theorem">
+          <p>
+            Let $(V, \norm{\cdot})$ be a <xref>normed vector space</xref>.
+            Then there exists an <xref>inner product</xref> $\inner{\cdot}{\cdot}$ on $V$ which <xref to="def:induced-norm">induces the norm</xref> $\norm{\cdot}$
+            if and only if the <dfn>parallelogram identity</dfn> holds for all $f,g\in V$:
+            $$\norm{f+g}^2+\norm{f-g}^2=2\norm{f}^2+2\norm{g}^2.$$
+          </p>
+
+          <div class="callout">
+            For $(\Leftarrow)$, a typical inner product is given by the <dfn>polarization identity</dfn>:
+            $$\inner{f}{g}=\frac{1}{4}\left(\norm{f+g}^2-\norm{f-g}^2+i\norm{f-ig}^2-\norm{f+ig}^2\right).$$
+          </div>
+        </theorem>
+
+        <theorem id="thm:dual-of-hilbert-space-is-hilbert">
+          Let $\hilbert$ be a <xref>Hilbert space</xref>. Then, there exists an <xref>inner product</xref> $\inner{\cdot}{\cdot}_{\hilbert^*}$ in $\hilbert^*$
+          which makes $\left(\hilbert^*,\inner{\cdot}{\cdot}_{\hilbert^*}\right)$ into a Hilbert space.
+
+          <footer>This theorem can be proved after introducing the Riesz Representation Theorem.</footer>
+        </theorem>
+      </section>
+
+      <section class="subsec">
+        <h3 class="section-title" id="hamel-and-schauder-bases">Hamel & Schauder bases</h3>
+
         <p>
-          Let $(V,\inner{\cdot}{\cdot})$ be an inner product space.
-          The <dfn>induced norm</dfn> $\norm\cdot_{\inner{\cdot}{\cdot}}$ by the inner product $\inner{\cdot}{\cdot}$
-          is defined by
-          $$\norm\psi_{\inner{\cdot}{\cdot}} = \sqrt{\inner{\psi}{\psi}}$$
-          for $\psi\in V$.
+          The notion of basis for a vector space $V$ is known from linear algebra:
         </p>
-      </definition>
 
-      <theorem>
-        An inner product space also forms a normed space with respect to the <xref to="def:induced-norm">induced norm</xref> by its inner product.
-      </theorem>
+        <definition id="def:hamel-basis" data-title="Hamel basis">
+          <p>
+            Let $V$ be a vector space. Then a subset $\mathcal{B}\subseteq V$ is called a <dfn>(Hamel) basis</dfn> if:
+          </p>
+          <ol>
+            <li>
+              $\mathcal{B}$ is linearly independent, i.e. for any distinct $e_1,\dots,e_n\in\mathcal{B}$ and $v^1,\dots,v^n\in\mathbb{C}$,
+              $$
+              \sum_{i=1}^n v^i e_i = 0 \quad\implies\quad v^1 = \dots = v^n = 0.
+              $$
+            </li>
+            <li>
+              for every $v\in V$, there exists a finite subset $\{e_1,\cdots,e_n\}\subseteq\mathcal{B}$
+              and $v^1,\cdots,v^n\in\mathbb{C}$ such that
+              $$v=\sum_{i=1}^nv^ie_i.$$
+            </li>
+          </ol>
+        </definition>
 
-      <definition id="def:hilbert-space" data-title="Hilbert space">
-        <p>
-          A (complex) vector space $(\hilbert,+,\cdot)$ is called a <dfn>(complex) Hilbert space</dfn>
-          if the following conditions are satisfied:
-        </p>
-        <ol class="roman-italic">
-          <li>$\hilbert$ is equipped with a sesquilinear inner product $\inner{\cdot}{\cdot}$;</li>
-          <li>The inner product <xref to="def:induced-norm">induces</xref> a norm $\norm\cdot$ on $\hilbert$;</li>
-          <li>$\hilbert$ is <xref to="def:completeness">complete</xref> with respect to this norm.</li>
-        </ol>
+        <lemma id="lem:vector-space-dim">Let $V$ be a vector space. Then, any two <xref to="def:hamel-basis">bases</xref> have the same cardinality.</lemma>
 
-        <div class="callout">
-          The norm $\norm\cdot:\hilbert\to\mathbb{R}$ of the Hilbert space $\hilbert$,
-          which is defined by $\psi\mapsto\sqrt{\inner{\psi}{\psi}}$, makes $(\hilbert,+,\cdot,\norm\cdot)$ into a <xref to="def:banach-space">Banach space</xref>.
-        </div>
-      </definition>
+        <definition id="def:vector-space-dim" data-title="Dimension">
+          <p>
+            Let $V$ be a vector space. Then the <dfn>dimension</dfn> of $V$ is denoted by $\dim V$, and is defined by:
+          </p>
+          <ol>
+            <li>If there exists a finite <xref to="def:hamel-basis">basis</xref> $\mathcal{B}$, then $\dim V=\lvert\mathcal{B}\rvert$.</li>
+            <li>Otherwise, $\dim V=\infty$.</li>
+          </ol>
+          <footer>This definition is well-defined by <xref to="lem:vector-space-dim"></xref>.</footer>
+        </definition>
 
-      <theorem>
-        <p>Let $\hilbert$ be a Hilbert space. Then</p>
-        <ol class="roman-italic">
-          <li>$\left(\mathcal{L}(\hilbert,\hilbert),\norm\cdot_{\mathcal{L}(\hilbert,\hilbert)}\right)$ is a Banach space.</li>
-          <li>$\left(\hilbert^*,\norm\cdot_{\hilbert^*}\right)=\left(\mathcal{L}(\hilbert,\mathbb{C}),\norm\cdot_{\hilbert,\mathbb{C}}\right)$ is a Banach space.</li>
-        </ol>
-        <details class="proof"><summary></summary>
-          <xref to="thm:bounded-linear-map-is-banach"></xref>. Trivial.
-        </details>
-      </theorem>
+        However, this is <em>not</em> the notion of basis that is used in quantum mechanics.
+        For in fact, on a Hilbert space $\hilbert$,
+        one may define a refined notion of basis:
 
-      We will see that $\hilbert^*$ is even a Hilbert space. It means there exists such inner product which induces the norm $\norm\cdot_{\hilbert^*}$.
-
-      <theorem>
-        <p>
-          Let $(V, \norm\cdot)$ be a normed vector space.
-          Then the following statements are equivalent:
-        </p>
-        <ol class="roman-italic">
-          <li>There exists a sesquilinear inner product $\inner{\cdot}{\cdot}$ in $V$ which induces the norm $\norm\cdot$.</li>
-          <li>
-            For all $f,g\in V$, the parallelogram identity holds:
-            $$\norm{f+g}+\norm{f-g}=2\norm f+2\norm g.$$
-          </li>
-        </ol>
-      </theorem>
+        <definition id="def:schauder-basis" data-title="Schauder basis">
+          <p>
+            Let $V$ be a <xref>normed vector space</xref>. Then a sequence $\mathcal{S} = \{e_n\}_{n\in\mathbb{N}}\subseteq V$ is called a <dfn>(Schauder) basis</dfn> if:
+          </p>
+          <ol>
+            <li>
+              $\mathcal{S}$ is linearly independent,
+              i.e. every finite subset of $\mathcal{S}$ is linearly independent.
+            </li>
+            <li>
+              for every $v\in V$, there exists a unique sequence $\{v^i\}_{i\in\mathbb{N}}\subseteq\mathbb{C}$ such that
+              $$
+              \lim_{n\to\infty} \norm{v - \sum_{i=1}^n v^i e_i} = 0.
+              $$
+            </li>
+          </ol>
+        </definition>
+      </section>
     </section>
   </article>
 </main>
