@@ -5,8 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lectures on Quantum Theory</title>
 
-<link href="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@52b175d/style.css" rel="stylesheet">
-<script defer src="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@52b175d/script.js"></script>
+<link href="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@7bd358f/style.css" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/gh/hangpark/mathjax-article-template@7bd358f/script.js"></script>
+
+<style>
+    .keyval { padding-left: 1rem; padding-right: 1rem; text-align:left; display:grid; grid-template-columns:max-content auto; column-gap:1.0rem; list-style:none; counter-reset:item; }
+    .keyval > li { display:contents; }
+    .keyval > li > *:first-child { white-space:nowrap; }
+    .keyval > li > *:first-child::before { counter-increment:item; content:counter(item) "."; font-variant-numeric:tabular-nums; margin-right: 0.32rem; }
+</style>
 </head>
 <body>
 <header class="site-header" role="banner">
@@ -17,6 +24,11 @@
 
 <main role="main">
   <article itemscope itemtype="https://schema.org/ScholarlyArticle">
+    <div hidden>
+      $$
+        \newcommand{\hilbert}{\mathcal{H}}
+      $$
+    </div>
     <h1 class="title" itemprop="headline">Lectures on Quantum Theory</h1>
     <p class="authors" itemprop="author">Lecturer: Dr. Frederic P. Schuller; Documented by Hang Park</p>
 
@@ -31,11 +43,11 @@
       <definition id="def:norm" data-title="Norm">
         <p>
           Let $V$ be a (complex) vector space.
-          Then, a map $\norm{\cdot}:V\to[0,\infty)$ is called a <dfn>norm</dfn> on $V$
+          Then, a map $\norm{\cdot}:V\to\mathbb{R}$ is called a <dfn>norm</dfn> on $V$
           if the following conditions are satisfied:
         </p>
         <ol>
-          <li><strong>(Absolute homogeneity)</strong> For all $v\in V$, $\norm{\alpha v}=\lvert\alpha\rvert\norm{v}$.</li>
+          <li><strong>(Absolute homogeneity)</strong> For all $v\in V$, $\norm{\alpha v}=\abs{\alpha}\norm{v}$.</li>
           <li><strong>(Triangle inequality)</strong> For all $u,v\in V$, $\norm{u+v}\leq\norm{u} + \norm{v}$.</li>
           <li><strong>(Positive-definite)</strong> $\norm{v}\geq0$ for all $v\in V$ and the equality holds if and only if $v=0$.</li>
         </ol>
@@ -52,20 +64,20 @@
       <definition id="def:inner-product" data-title="Inner product">
         <p>
           Let $V$ be a (complex) vector space.
-          A map $\inner{\cdot}{\cdot}:V\times V\to\mathbb{C}$ is an <dfn>inner product</dfn> on $V$ if:
+          A map $\innerproduct{\cdot}{\cdot}:V\times V\to\mathbb{C}$ is an <dfn>inner product</dfn> on $V$ if:
         </p>
         <ol>
-          <li><strong>(Hermitian symmetry)</strong> $\inner{u}{v}=\overline{\inner{v}{u}}$ for all $u,v\in V$.</li>
+          <li><strong>(Hermitian symmetry)</strong> $\innerproduct{u}{v}=\overline{\innerproduct{v}{u}}$ for all $u,v\in V$.</li>
           <li>
             <strong>(Sesquilinearity)</strong>
-            $\inner{\cdot}{\cdot}:V\times V\to\mathbb{C}$ is linear in the first argument and conjugate-linear in the second,
+            $\innerproduct{\cdot}{\cdot}:V\times V\to\mathbb{C}$ is linear in the first argument and conjugate-linear in the second,
             i.e. for all $u,v,w\in V$ and $\alpha,\beta\in\mathbb{C}$,
-            $$\begin{aligned}
-              \inner{\alpha u+\beta v}{w}&=\alpha\inner{u}{w}+\beta\inner{v}{w},\\
-              \inner{u}{\alpha v+\beta w}&=\overline\alpha\inner{u}{v}+\overline\beta\inner{u}{w}.
-            \end{aligned}$$
+            \begin{align}
+              \innerproduct{\alpha u+\beta v}{w}&=\alpha\innerproduct{u}{w}+\beta\innerproduct{v}{w},\\
+              \innerproduct{u}{\alpha v+\beta w}&=\overline\alpha\innerproduct{u}{v}+\overline\beta\innerproduct{u}{w}.
+            \end{align}
           </li>
-          <li><strong>(Positive definiteness)</strong> $\inner{v}{v}\ge 0$ for all $v\in V$, and $\inner{v}{v}=0$ if and only if $v=0$.</li>
+          <li><strong>(Positive definiteness)</strong> $\innerproduct{v}{v}\ge 0$ for all $v\in V$, and $\innerproduct{v}{v}=0$ if and only if $v=0$.</li>
         </ol>
       </definition>
 
@@ -75,9 +87,9 @@
 
       <definition id="def:induced-norm">
         <p>
-          Let $(V,\inner{\cdot}{\cdot})$ be an <xref>inner product space</xref>.
-          The <dfn>induced norm</dfn> $\norm{\cdot}_{\inner{\cdot}{\cdot}}$ is
-          $$\norm{\psi}_{\inner{\cdot}{\cdot}} = \sqrt{\inner{\psi}{\psi}}$$
+          Let $(V,\innerproduct{\cdot}{\cdot})$ be an <xref>inner product space</xref>.
+          The <dfn>induced norm</dfn> $\norm{\cdot}_{\innerproduct{\cdot}{\cdot}}$ is
+          $$\norm{\psi}_{\innerproduct{\cdot}{\cdot}} = \sqrt{\innerproduct{\psi}{\psi}}$$
           where $\psi\in V$.
         </p>
 
@@ -92,10 +104,10 @@
 
       <theorem id="thm:cauchy-schwarz-inequality" data-title="Cauchy&ndash;Schwarz inequality">
         <p>
-          Let $\left(V, \inner{\cdot}{\cdot}\right)$ be an <xref>inner product space</xref>.
+          Let $\left(V, \innerproduct{\cdot}{\cdot}\right)$ be an <xref>inner product space</xref>.
           Then for all $u,v\in V$, the following inequality holds:
-          $$\left\lvert\inner{u}{v}\right\rvert\leq\norm{u}\cdot\norm{v}$$
-          where $\norm{\cdot}$ is the <xref>induced norm</xref> by the inner product $\inner{\cdot}{\cdot}$.
+          $$\abs{\innerproduct{u}{v}}\leq\norm{u}\cdot\norm{v}$$
+          where $\norm{\cdot}$ is the <xref>induced norm</xref> by the inner product $\innerproduct{\cdot}{\cdot}$.
         </p>
         <p>
           Moreover, the equality holds if and only if $u$ and $v$ are linearly dependent.
@@ -107,26 +119,26 @@
           </p>
           <p>
             By sesquilinearity and Hermitian symmetry of the <xref to="def:inner-product">inner product</xref>,
-            $$\begin{aligned}
+            \begin{align}
               0\leq f(\alpha) &=\norm{u-\alpha v}^2
-              = \inner{u-\alpha v}{u-\alpha v} \\
-              &= \inner{u}{u-\alpha v}-\alpha\inner{v}{u-\alpha v}
-              = \inner{u}{u} - \overline\alpha\inner{u}{v} - \alpha\inner{v}{u} + \alpha\overline\alpha\inner{v}{v} \\
-              &= \norm{u}^2 - \alpha\overline{\inner{u}{v}} - \overline\alpha\inner{u}{v} + \lvert\alpha\rvert^2\norm{v}^2.
-            \end{aligned}$$
-            Taking $\alpha=\inner{u}{v}/\norm{v}^2$ gives
-            $$\begin{aligned}
-              f\left(\frac{\inner{u}{v}}{\norm{v}^2}\right)
-              &= \norm{u}^2 - \frac{\inner{u}{v}}{\norm{v}^2}\overline{\inner{u}{v}} - \overline{\frac{\inner{u}{v}}{\norm{v}^2}}\inner{u}{v} + \left\lvert\frac{\inner{u}{v}}{\norm{v}^2}\right\rvert^2\norm{v}^2 \\
-              &= \norm{u}^2 - \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^2} - \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^2} + \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^4}\norm{v}^2 \\
-              &= \norm{u}^2 - \frac{\lvert\inner{u}{v}\rvert^2}{\norm{v}^2} \geq 0,
-            \end{aligned}$$
-            hence $\left\lvert\inner{u}{v}\right\rvert\leq\norm{u}\cdot\norm{v}$ holds.
+              = \innerproduct{u-\alpha v}{u-\alpha v} \\
+              &= \innerproduct{u}{u-\alpha v}-\alpha\innerproduct{v}{u-\alpha v}
+              = \innerproduct{u}{u} - \overline\alpha\innerproduct{u}{v} - \alpha\innerproduct{v}{u} + \alpha\overline\alpha\innerproduct{v}{v} \\
+              &= \norm{u}^2 - \alpha\overline{\innerproduct{u}{v}} - \overline\alpha\innerproduct{u}{v} + \abs{\alpha}^2\norm{v}^2.
+            \end{align}
+            Taking $\alpha=\innerproduct{u}{v}/\norm{v}^2$ gives
+            \begin{align}
+              f\left(\frac{\innerproduct{u}{v}}{\norm{v}^2}\right)
+              &= \norm{u}^2 - \frac{\innerproduct{u}{v}}{\norm{v}^2}\overline{\innerproduct{u}{v}} - \overline{\frac{\innerproduct{u}{v}}{\norm{v}^2}}\innerproduct{u}{v} + \abs{\frac{\innerproduct{u}{v}}{\norm{v}^2}}^2\norm{v}^2 \\
+              &= \norm{u}^2 - \frac{\abs{\innerproduct{u}{v}}^2}{\norm{v}^2} - \frac{\abs{\innerproduct{u}{v}}^2}{\norm{v}^2} + \frac{\abs{\innerproduct{u}{v}}^2}{\norm{v}^4}\norm{v}^2 \\
+              &= \norm{u}^2 - \frac{\abs{\innerproduct{u}{v}}^2}{\norm{v}^2} \geq 0,
+            \end{align}
+            hence $\abs{\innerproduct{u}{v}}\leq\norm{u}\cdot\norm{v}$ holds.
           </p>
           <p>
-            Equality holds if and only if $u-\alpha v=0$ with $\alpha=\inner{u}{v}/\norm{v}^2$,
-            i.e.,
-            $$u-\frac{\inner{u}{v}}{\norm{v}^2}v=0,$$
+            Equality holds if and only if $u-\alpha v=0$ with $\alpha=\innerproduct{u}{v}/\norm{v}^2$,
+            i.e.
+            $$u-\frac{\innerproduct{u}{v}}{\norm{v}^2}v=0,$$
             so $u$ and $v$ are linearly dependent.
           </p>
         </details>
@@ -166,8 +178,8 @@
 
         <details class="example"><summary>Counterexample.</summary>
           <p>
-            Let $W=C^0([0,1])=\{f:[0,1]\to\mathbb{C}\mid f\mathrm{\ is\ continuous}\}$.
-            Define a norm by $\norm{f}_\infty=\sup_{x\in[0,1]}\lvert f(x)\rvert$. (It is called the <dfn>maximum norm</dfn>.)
+            Let $W=C^0([0,1])=\Set{f:[0,1]\to\mathbb{C}|f\mathrm{\ is\ continuous}}$.
+            Define a norm by $\norm{f}_\infty=\sup_{x\in[0,1]}\abs{f(x)}$. (It is called the <dfn>maximum norm</dfn>.)
             Then we can easily show that $(W,\norm{\cdot}_\infty)$ is complete, so is a Banach space.
           </p>
           <p>
@@ -196,7 +208,7 @@
           <div class="callout">
             <p>
               Although in quantum mechanics we do not use the maximum norm
-              $\lVert\cdot\rVert_\infty$ from the above example, and the momentum operator
+              $\norm{\cdot}_\infty$ from the above example, and the momentum operator
               is defined differently — in one spatial dimension as
               $$P(\psi) = -\,i\,\hbar\,\psi'(x),$$
               where $\hbar$ is the reduced Planck constant — the example still suggests
@@ -213,12 +225,12 @@
         <p>
           Let $V$ be a <xref>normed vector space</xref> and $W$ be a <xref>Banach space</xref>.
           Then the set
-          $$\mathcal{L}(V,W)=\{A:V\xrightarrow{\ \textrm{linear}\ }W\mid\norm{A}<\infty\}$$
+          $$\mathcal{L}(V,W)=\Set{A:V\xrightarrow{\ \textrm{linear}\ }W|\norm{A}<\infty}$$
           is a Banach space if equipped with the <xref>operator norm</xref> $\norm{\cdot}_{\mathcal{L}(V,W)}$.
         </p>
         <details class="proof"><summary>Proof. (completeness)</summary>
           <p>
-            Assume that $\{A_n\}_{n\in\mathbb{N}}$ is a Cauchy sequence in $\mathcal{L}(V,W)$.
+            Assume that $(A_n)_{n\in\mathbb{N}}$ is a Cauchy sequence in $\mathcal{L}(V,W)$.
             Then for a given $\varepsilon>0$, there exists
             $N\in\mathbb{N}$ such that for all $n,m\ge N$,
             $$\norm{A_n - A_m} < \varepsilon.$$
@@ -232,7 +244,7 @@
                   \norm{A_nf-A_mf}_W=\norm{(A_n-A_m)f}_W\leq\norm{A_n-A_m}\cdot\norm{f}_V
                   <\varepsilon\cdot\norm{f}_V
                 $$
-                and $\norm{f}_V$ is finite, $\{A_nf\}_{n\in\mathbb{N}}\subseteq W$ is also a Cauchy sequence.
+                and $\norm{f}_V$ is finite, $(A_nf)_{n\in\mathbb{N}}\subseteq W$ is also a Cauchy sequence.
               </p>
               <p>
                 Since $(W,\norm{\cdot}_W)$ is a Banach space, the limit $\lim_{n\to\infty}A_nf$ exists in $W$.
@@ -245,12 +257,12 @@
               <p><i>(Linearity)</i></p>
               <p>
                 For all $f,g\in V$ and for all $\lambda\in\mathbb{C}$,
-                $$\begin{aligned}
+                \begin{align}
                   A(f+g)&=\lim_{n\to\infty}A_n(f+g)
                   =\lim_{n\to\infty}(A_nf+A_ng) \\
                   &=\lim_{n\to\infty}A_nf+\lim_{n\to\infty}A_ng
                   =Af+Ag,
-                \end{aligned}$$
+                \end{align}
                 and similarly $A(\lambda f)=\lambda\cdot Af$.
               </p>
             </li>
@@ -258,14 +270,14 @@
               <p><i>(Boundedness)</i></p>
               <p>
                 Fix $m = N$. By the triangle inequality,
-                $$\norm{A_n} \le \norm{A_n - A_N} + \norm{A_N} < \varepsilon + \norm{A_N}.$$
+                $$\norm{A_n}\leq\norm{A_n - A_N} + \norm{A_N} < \varepsilon + \norm{A_N}.$$
                 Hence $\{\norm{A_n}\}_{n\in\mathbb{N}}$ is bounded by
                 $$M = \max\left\{\norm{A_1},\dots,\norm{A_{N-1}},\,\varepsilon + \norm{A_N}\right\} < \infty.$$
               </p>
               <p>
                 For each $f \in V$, by continuity of the norm,
-                $$\norm{A f}_W = \norm{\lim_{n\to\infty}A_n f}_W = \lim_{n\to\infty} \norm{A_n f}_W \le \lim_{n\to\infty} \norm{A_n}\norm{f}_V \le M\norm{f}_V.$$
-                Therefore $A$ is bounded and $\norm{A} \le M$.
+                $$\norm{A f}_W = \norm{\lim_{n\to\infty}A_n f}_W = \lim_{n\to\infty} \norm{A_n f}_W\leq\lim_{n\to\infty}\norm{A_n}\norm{f}_V\leqM\norm{f}_V.$$
+                Therefore $A$ is bounded and $\norm{A}\leq M$.
               </p>
             </li>
             <li>
@@ -331,8 +343,8 @@
             <li>
               <p><i>(Construction)</i></p>
               <p>
-                Let $f\in V$ and consider a sequence $\{ f_n\}\subseteq\mathcal{D}_A$ with $\lim_{n\to\infty}f_n=f$.
-                Then $\{f_n\}$ is certainly a Cauchy sequence. Note that $\{Af_n\}$ is again a Cauchy sequence in $W$.
+                Let $f\in V$ and consider a sequence $(f_n)\subseteq\mathcal{D}_A$ with $\lim_{n\to\infty}f_n=f$.
+                Then $(f_n)$ is certainly a Cauchy sequence. Note that $(Af_n)$ is again a Cauchy sequence in $W$.
                 Since $W$ is Banach,
                 $$\lim_{n\to\infty}Af_n\in W.$$
               </p>
@@ -344,8 +356,8 @@
             <li>
               <p><i>(Well-defined)</i></p>
               <p>
-                This definition is well-defined, i.e. does not depend on the choice of $\{f_n\}$.
-                Moreover, we can always construct such $\{f_n\}$ since $\mathcal{D}_A$ is dense in $V$.
+                This definition is well-defined, i.e. does not depend on the choice of $(f_n)$.
+                Moreover, we can always construct such $(f_n)$ since $\mathcal{D}_A$ is dense in $V$.
               </p>
               <p><i>(Omitted)</i></p>
             </li>
@@ -374,7 +386,7 @@
         </details>
       </theorem>
 
-      <definition data-title="Dual space">
+      <definition id="def:dual-space" data-title="Dual space">
         <p>
           Let $(V,\norm{\cdot}_V)$ be a <xref>normed vector space</xref>. The <dfn>(topological) dual space</dfn> of $V$ is defined by
           $$
@@ -397,7 +409,7 @@
 
       <definition id="strong-and-weak-convergence" data-title="Strong & weak convergence">
         Let $V$ be a <xref>normed vector space</xref>.
-        A sequence $\{f_n\}_{n\in\mathbb{N}}\subseteq V$ is said to
+        A sequence $(f_n)_{n\in\mathbb{N}}\subseteq V$ is said to
         <ol>
           <li>
             <p><dfn>converge strongly</dfn> to $f\in V$ if</p>
@@ -428,18 +440,18 @@
 
         <definition id="def:hilbert-space" data-title="Hilbert space">
           <p>
-            A <xref to="def:inner-product-space">(complex) inner product space</xref> $(\hilbert,\inner{\cdot}{\cdot})$ is called a <dfn>(complex) Hilbert space</dfn>
+            A <xref to="def:inner-product-space">(complex) inner product space</xref> $(\hilbert,\innerproduct{\cdot}{\cdot})$ is called a <dfn>(complex) Hilbert space</dfn>
             if the following conditions are satisfied:
           </p>
           <ol>
-            <li>$\hilbert$ is equipped with an <xref>inner product</xref> $\inner{\cdot}{\cdot}$.</li>
+            <li>$\hilbert$ is equipped with an <xref>inner product</xref> $\innerproduct{\cdot}{\cdot}$.</li>
             <li>The inner product <xref to="def:induced-norm">induces a norm</xref> $\norm{\cdot}$ on $\hilbert$.</li>
             <li>$\hilbert$ is <xref to="def:complete">complete</xref> with respect to this norm.</li>
           </ol>
 
           <div class="callout">
             The norm $\norm{\cdot}:\hilbert\to\mathbb{R}$ of the Hilbert space $\hilbert$,
-            which is defined by $\psi\mapsto\sqrt{\inner{\psi}{\psi}}$, makes $(\hilbert,\norm{\cdot})$ into a <xref>Banach space</xref>.
+            which is defined by $\psi\mapsto\sqrt{\innerproduct{\psi}{\psi}}$, makes $(\hilbert,\norm{\cdot})$ into a <xref>Banach space</xref>.
           </div>
         </definition>
 
@@ -459,20 +471,20 @@
         <theorem id="thm:jordan-von-neumann" data-title="Jordan&ndash;von Neumann theorem">
           <p>
             Let $(V, \norm{\cdot})$ be a <xref>normed vector space</xref>.
-            Then there exists an <xref>inner product</xref> $\inner{\cdot}{\cdot}$ on $V$ which <xref to="def:induced-norm">induces the norm</xref> $\norm{\cdot}$
+            Then there exists an <xref>inner product</xref> $\innerproduct{\cdot}{\cdot}$ on $V$ which <xref to="def:induced-norm">induces the norm</xref> $\norm{\cdot}$
             if and only if the <dfn>parallelogram identity</dfn> holds for all $f,g\in V$:
             $$\norm{f+g}^2+\norm{f-g}^2=2\norm{f}^2+2\norm{g}^2.$$
           </p>
 
           <div class="callout">
             For $(\Leftarrow)$, a typical inner product is given by the <dfn>polarization identity</dfn>:
-            $$\inner{f}{g}=\frac{1}{4}\left(\norm{f+g}^2-\norm{f-g}^2+i\norm{f-ig}^2-\norm{f+ig}^2\right).$$
+            $$\innerproduct{f}{g}=\frac{1}{4}\left(\norm{f+g}^2-\norm{f-g}^2+i\norm{f-ig}^2-\norm{f+ig}^2\right).$$
           </div>
         </theorem>
 
         <theorem id="thm:dual-of-hilbert-space-is-hilbert">
-          Let $\hilbert$ be a <xref>Hilbert space</xref>. Then, there exists an <xref>inner product</xref> $\inner{\cdot}{\cdot}_{\hilbert^*}$ in $\hilbert^*$
-          which makes $\left(\hilbert^*,\inner{\cdot}{\cdot}_{\hilbert^*}\right)$ into a Hilbert space.
+          Let $\hilbert$ be a <xref>Hilbert space</xref>. Then, there exists an <xref>inner product</xref> $\innerproduct{\cdot}{\cdot}_{\hilbert^*}$ in $\href{#def:dual-space}{\hilbert^*}$
+          which makes $\left(\hilbert^*,\innerproduct{\cdot}{\cdot}_{\hilbert^*}\right)$ into a Hilbert space.
 
           <footer>This theorem can be proved after introducing the Riesz Representation Theorem.</footer>
         </theorem>
@@ -487,11 +499,11 @@
 
         <definition id="def:hamel-basis" data-title="Hamel basis">
           <p>
-            Let $V$ be a vector space. Then a subset $\mathcal{B}\subseteq V$ is called a <dfn>(Hamel) basis</dfn> if:
+            Let $V$ be a vector space. Then a subset $\mathcal{B}\subseteq V$ is called a <dfn>Hamel basis</dfn> if:
           </p>
           <ol>
             <li>
-              $\mathcal{B}$ is linearly independent, i.e. for any distinct $e_1,\dots,e_n\in\mathcal{B}$ and $v^1,\dots,v^n\in\mathbb{C}$,
+              $\mathcal{B}$ is linearly independent, i.e. for any finite subset $\{e_1,\dots,e_n\}\subseteq\mathcal{B}$ and $v^1,\dots,v^n\in\mathbb{C}$,
               $$
               \sum_{i=1}^n v^i e_i = 0 \quad\implies\quad v^1 = \dots = v^n = 0.
               $$
@@ -511,7 +523,7 @@
             Let $V$ be a vector space. Then the <dfn>dimension</dfn> of $V$ is denoted by $\dim V$, and is defined by:
           </p>
           <ol>
-            <li>If there exists a finite <xref to="def:hamel-basis">basis</xref> $\mathcal{B}$, then $\dim V=\lvert\mathcal{B}\rvert$.</li>
+            <li>If there exists a finite <xref to="def:hamel-basis">basis</xref> $\mathcal{B}$, then $\dim V=\abs{\mathcal{B}}$.</li>
             <li>Otherwise, $\dim V=\infty$.</li>
           </ol>
           <footer>This definition is well-defined by <xref to="lem:vector-space-dim"></xref>.</footer>
@@ -523,21 +535,281 @@
 
         <definition id="def:schauder-basis" data-title="Schauder basis">
           <p>
-            Let $V$ be a <xref>normed vector space</xref>. Then a sequence $\mathcal{S} = \{e_n\}_{n\in\mathbb{N}}\subseteq V$ is called a <dfn>(Schauder) basis</dfn> if:
+            Let $V$ be a <xref>normed vector space</xref>. Then a sequence $\mathcal{S} = (e_n)_{n\in\mathbb{N}}\subseteq V$ is called a <dfn>(Schauder) basis</dfn> if:
           </p>
           <ol>
             <li>
-              $\mathcal{S}$ is linearly independent,
-              i.e. every finite subset of $\mathcal{S}$ is linearly independent.
+              $\mathcal{S}$ is linearly independent.
             </li>
             <li>
-              for every $v\in V$, there exists a unique sequence $\{v^i\}_{i\in\mathbb{N}}\subseteq\mathbb{C}$ such that
+              for every $v\in V$, there exists a unique sequence $(v^i)_{i\in\mathbb{N}}\subseteq\mathbb{C}$ such that
               $$
               \lim_{n\to\infty} \norm{v - \sum_{i=1}^n v^i e_i} = 0.
               $$
             </li>
           </ol>
         </definition>
+
+        <definition id="def:span" data-title="Span">
+          Let $V$ be a vector space and let $S\subseteq V$.
+          The <dfn>span</dfn> of $S$, denoted by $\operatorname{span} S$, is the set of all finite linear combinations of elements of $S$:
+          $$
+          \operatorname{span} S = \Set{\sum_{i=1}^n \lambda_i v_i|n\in\mathbb{N},v_i\in S,\lambda_i\in\mathbb{C}}.
+          $$
+          <footer>By convention, $\operatorname{span}\emptyset={0}$.</footer>
+        </definition>
+
+        <theorem id="minimal-subspace" data-title="Minimal subspace">
+          Let $V$ be a vector space and let $S\subseteq V$.
+          Then, $\operatorname{span}S$ is the smallest subspace of $V$ containing $S$.
+        </theorem>
+
+        <theorem id="span-is-dense-in-banach">
+          <p>
+            Let $V$ be a <xref>normed vector space</xref> and $\mathcal{S}$ be a <xref>Schauder basis</xref> of $V$.
+            Then, $\operatorname{span}{\mathcal{S}}$ is dense in $V$, i.e.
+            $$\overline{\operatorname{span}{\mathcal{S}}}=V.$$
+          </p>
+
+          <footer>
+            Hereafter, &ldquo;basis&rdquo; means &ldquo;Schauder basis&rdquo; unless stated otherwise.
+          </footer>
+        </theorem>
+      </section>
+
+      <section class="subsec">
+        <h3 class="section-title">Unitary maps</h3>
+
+        <p>
+          In general, for obvious reasons, one is interested
+          in the <em>structure-preserving maps</em> between any two spaces of the same type:
+        </p>
+
+        <div style="overflow-x:auto; display:block">
+          <table style="min-width: 100%; text-align: center; border-collapse:collapse; width:max-content">
+            <thead>
+            <th>space</th>
+            <th>structure</th>
+            <th>structure-preserving map</th>
+            <th>terminology</th>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Set $S$</td>
+              <td style="text-align: left">
+                <ol class="keyval">
+                  <li>
+                    <span>cardinality</span>
+                    <span>$\lvert\cdot\rvert$</span>
+                  </li>
+                </ol>
+              </td>
+              <td>
+                $$
+                S_1\xrightarrow{\ \varphi\ }S_2 \\[12px]
+                \exists\varphi^{-1}:S_2\to S_1
+                $$
+              </td>
+              <td>bijection</td>
+            </tr>
+
+            <tr>
+              <td>Metric space $X$</td>
+              <td>
+                <ol class="keyval">
+                  <li>
+                    <span>metric</span>
+                    <span>$d : X \times X \to \mathbb{R}$</span>
+                  </li>
+                </ol>
+              </td>
+              <td>
+                $$
+                \textrm{bijective}\ X_1\xrightarrow{\ \varphi\ }X_2 \\[12px]
+                d(\varphi(v), \varphi(w))=d(v, w)
+                $$
+              </td>
+              <td>bijective<br/>isometry</td>
+            </tr>
+
+            <tr>
+              <td>Vector space $V$ over $\mathbb{F}$</td>
+              <td>
+                <ol class="keyval">
+                  <li>
+                    <span>addition</span>
+                    <span>$+ : V \times V \to V$</span>
+                  </li>
+                  <li>
+                    <span>scalar multiplication</span>
+                    <span>$\cdot : \mathbb{F} \times V \to V$</span>
+                  </li>
+                </ol>
+              </td>
+              <td>
+                $$
+                \textrm{bijective}\ V_1\xrightarrow{\ \varphi\ }V_2 \\[12px]
+                \varphi(v_1+v_2)=\varphi(v_1)+\varphi(v_2) \\
+                \varphi(\lambda\cdot v)=\lambda\cdot\varphi(v)
+                $$
+              </td>
+              <td>(vector space-)<br/>isomorphism</td>
+            </tr>
+
+            <tr>
+              <td>Hilbert space $\hilbert$</td>
+              <td>
+                <ol class="keyval">
+                  <li>
+                    <span>addition</span>
+                    <span>$+ : \hilbert \times \hilbert \to \hilbert$</span>
+                  </li>
+                  <li>
+                    <span>scalar multiplication</span>
+                    <span>$\cdot : \mathbb{F} \times \hilbert \to \hilbert$</span>
+                  </li>
+                  <li>
+                    <span>inner product</span>
+                    <span>$\innerproduct{\cdot} : \hilbert \times \hilbert \to \mathbb{C}$</span>
+                  </li>
+                </ol>
+              </td>
+              <td>
+                $$
+                \textrm{bijective, linear}\ \hilbert_1\xrightarrow{\ \varphi\ }\hilbert_2 \\[12px]
+                \innerproduct{\varphi(v_1)}{\varphi(v_2)}=\innerproduct{v_1}{v_2}
+                $$
+              </td>
+              <td>unitary map</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <definition id="def:unitary-map" data-title="Unitary map">
+          Let $\hilbert_1$ and $\hilbert_2$ be <xref to="def:hilbert-space">Hilbert spaces</xref>. A linear map $U:\hilbert_1\to\hilbert_2$ is called <dfn>unitary</dfn>
+          if it preserves the <xref>inner product</xref>, i.e.,
+          $$\innerproduct{U\psi}{U\varphi}_{\hilbert_2} = \innerproduct{\psi}{\varphi}_{\hilbert_1}$$
+          for all $\psi,\varphi\in\hilbert_1$, and $U$ is surjective.
+        </definition>
+
+        <theorem id="thm:unitary-is-bounded-isometric">
+          Any <xref>unitary map</xref> of a <xref>Hilbert space</xref> is isometric and <xref to="def:bounded-operator">bounded</xref>.
+          <details class="proof"><summary></summary>
+            <p>
+              Let $\hilbert_1$ and $\hilbert_2$ be Hilbert spaces and let $U:\hilbert_1\to\hilbert_2$ be a unitary map.
+            </p>
+            <p>
+              By <xref to="def:unitary-map"></xref>,
+              $\innerproduct{U\psi}{U\varphi}_{H_2}=\innerproduct{\psi}{\varphi}_{H_1}$ for all $\psi,\varphi\in H_1$.
+            </p>
+            <ul class="roman-italic">
+              <li>
+                <p><i>(Isometric)</i></p>
+                <p>
+                  By <xref to="def:induced-norm"></xref>,
+                  $$\norm{U\psi}_{H_2}^2=\innerproduct{U\psi}_{H_2}=\innerproduct{\psi}_{H_1}=\norm{\psi}_{H_1}^2,$$
+                  hence $\norm{U\psi}=\norm{\psi}$.
+                  Therefore, $U$ is an isometry.
+                </p>
+              </li>
+              <li>
+                <p><i>(Bounded)</i></p>
+                <p>
+                  Since $U$ is an isometry, we have
+                  $$
+                  \norm{U} = \sup_{\norm{\psi}_{H_1}=1}\norm{U\psi}_{H_2}
+                  = \sup_{\norm{\psi}_{H_1}=1}\norm{\psi}_{H_1}
+                  = \sup_{\norm{\psi}_{H_1}=1}1=1,
+                  $$
+                  so $U$ is bounded.
+                </p>
+              </li>
+            </ul>
+          </details>
+        </theorem>
+      </section>
+
+      <section class="subsec">
+        <h3 class="section-title">Separable Hilbert spaces</h3>
+
+        <p>
+          In quantum mechanics, in contrast to QFT, we always only look at separable Hilbert spaces:
+        </p>
+
+        <definition id="def:separable-hilbert-space" data-title="Separable Hilbert space">
+          <p>
+            A <xref>Hilbert space</xref> $\hilbert$ is called <dfn>separable</dfn>
+            if it has a countable orthonormal set $\mathcal{S}=(e_n)_{n\in\mathbb{N}}\subseteq\hilbert$
+            whose <xref>span</xref> is dense in $\hilbert$:
+          </p>
+          <ol>
+            <li>
+              <strong>(Orthonormality)</strong> for any $i,j\in\mathbb{N}$,
+              $$
+              \innerproduct{e_i}{e_j} = \delta_{ij} = \begin{cases}
+              1 & \textrm{if } i=j \\
+              0 & \textrm{if } i\neq j.
+              \end{cases}
+              $$
+            </li>
+            <li>
+              <strong>(Totality)</strong> $\overline{\operatorname{span}{\mathcal{S}}}=\hilbert$.
+            </li>
+          </ol>
+          </p>
+        </definition>
+
+        <corollary>
+          A <xref>Hilbert space</xref> is <xref to="def:separable-hilbert-space">separable</xref> if and only if it has an orthonormal <xref to="def:schauder-basis">(Schauder) basis</xref>.
+        </corollary>
+
+        How many different separable Hilbert spaces are there? (For the case $\dim\hilbert=\infty$)
+
+        <definition id="def:lp-space" data-title="$\ell^p$ space">
+          <ol>
+            <li>
+              Let $1\leq p < \infty$. The $\ell^p$ space is defined as
+              $$\ell^p=\Set{(a_i)_{i\in\mathbb{N}}\subseteq\mathbb{C}|\sum_{i=1}^\infty\abs{a_i}^p<\infty}$$
+              equipped with pointwise addition and scalar multiplication, and the norm
+              $$\norm{(a_i)_{i\in\mathbb{N}}}_p=\left(\sum_{i=1}^\infty \abs{a_i}^p\right)^{1/p}.$$
+            </li>
+            <li>
+              The $\ell^\infty$ space is defined as
+              $$\ell^\infty = \Set{(a_i)_{i\in\mathbb{N}}\subseteq\mathbb{C}|\sup_{i\in\mathbb{N}} \abs{a_i} < \infty},$$
+              equipped with pointwise addition and scalar multiplication, and the norm
+              $$\norm{(a_i)_{i\in\mathbb{N}}}_\infty = \sup_{i\in\mathbb{N}} |a_i|.$$
+            </li>
+          </ol>
+        </definition>
+
+        <theorem id="thm:lp-space-is-banach">
+          For $1\leq p\leq\infty$, $\href{#def:lp-space}{(\ell^p,\norm{\cdot}_p)}$ is a <xref>Banach space</xref>.
+        </theorem>
+
+        <theorem id="thm:l2-space-is-hilbert">
+          <p>
+            The space $\href{#def:lp-space}{\ell^2}$, equipped with the <xref>inner product</xref>
+            $$\innerproduct{a}{b} = \sum_{i=1}^\infty \overline{a_i} b_i$$
+            where $a=(a_i)_{i\in\mathbb{N}}$ and $b=(b_i)_{i\in\mathbb{N}}$,
+            is a <xref>separable Hilbert space</xref>.
+          </p>
+          <p>
+            Moreover, the inner product coincides with the one obtained via
+            the polarization identity in <xref to="thm:jordan-von-neumann" format="title"></xref>.
+          </p>
+        </theorem>
+
+        <theorem id="uniqueness-of-separable-hilbert-space" data-title="Uniqueness of separable Hilbert space">
+          <p>
+            Any infinite dimensional <xref to="def:separable-hilbert-space">separable (complex) Hilbert space</xref> is isomorphic (up to <xref to="def:unitary-map">unitary</xref> equivalence)
+            to $\href{#def:lp-space}{\ell^2}$.
+          </p>
+
+          <div class="callout">
+            This is of course the strongest possible classification result imaginable.
+          </div>
+        </theorem>
       </section>
     </section>
   </article>
