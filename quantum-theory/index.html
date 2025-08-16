@@ -18,11 +18,26 @@
 <body>
 <header class="site-header" role="banner">
   <div class="header-inner">
+    <button id="toc-menu-btn" class="toc-menu-btn" aria-controls="toc-drawer" aria-expanded="false" aria-label="Toggle contents">⋮</button>
     <div class="brand">Lectures on Quantum Theory</div>
   </div>
 </header>
 
 <main role="main">
+  <aside id="toc" class="toc" aria-label="Table of contents">
+    <input id="toc-drawer-toggle" type="checkbox" hidden>
+    <div class="toc-inner">
+      <div class="toc-header">
+        <strong>Contents</strong>
+        <div class="toc-actions" role="group" aria-label="Expand & Collapse">
+          <button type="button" class="toc-btn toc-expand" title="Expand all">Expand all</button>
+          <button type="button" class="toc-btn toc-collapse" title="Collapse all">Collapse all</button>
+        </div>
+      </div>
+      <nav class="toc-tree" aria-label="Sections"></nav>
+    </div>
+  </aside>
+
   <article itemscope itemtype="https://schema.org/ScholarlyArticle">
     <div hidden>
       $$
